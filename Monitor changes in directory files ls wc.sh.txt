@@ -1,0 +1,27 @@
+last=0
+curr=0
+diffval=0
+average=0
+runningtotal=0
+counter=0
+while true;
+    do
+        curr=$(ls -1 | wc -l)
+        echo "$curr files currently"
+        diffval=`expr $last - $curr`
+        echo "$diffval files fewer"
+        last=$curr
+        
+        counter=$((counter+1))
+        if [ $counter -gt 1 ]
+        then
+            runningtotal=`expr $runningtotal + $diffval`
+            echo "$runningtotal is the running total of differences"
+            average=`expr $runningtotal / $counter`
+            echo "Average change: $average"
+        fi
+
+        echo ""
+        echo "---------"
+        sleep $1
+done;

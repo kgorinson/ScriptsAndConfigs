@@ -1,0 +1,6 @@
+#Remove
+rename -n 's/(.{5})(.*)$/$2/' *.*
+
+
+#Add Prefix
+rename -n 's/^/7_/' *

@@ -1,0 +1,11 @@
+cp "~/c/bashnew.txt" ~/.bashrc
+cd ~
+. .bashrc
+cp "~/c/tmux.conf.txt" ~/tmux.conf
+sudo apt-get update
+sudo apt-get upgrade -y
+sudo apt-get dist-upgrade -y
+sudo apt-get install -y xfce4-terminal xfce4 tmux git firefox gedit leafpad gcc g++ python python-pip python3 xrdp apache2 xfce4-artwork sqlite3 software-properties-common gnome-system-monitor
+wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key add - && sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
+sudo apt-get update 
+sudo apt-get install -y google-chrome-stable

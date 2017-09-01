@@ -1,0 +1,245 @@
+# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
+# for examples
+#set -x
+# If not running interactively, don't do anything
+[ -z "$PS1" ] && return
+
+# don't put duplicate lines in the history. See bash(1) for more options
+# ... or force ignoredups and ignorespace
+HISTCONTROL=ignoredups:ignorespace
+
+# append to the history file, don't overwrite it
+shopt -s histappend
+
+# for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
+HISTSIZE=5000
+HISTFILESIZE=5000
+
+
+#VARIABLES
+aconf='000-default.conf'
+
+
+# check the window size after each command and, if necessary,
+# update the values of LINES and COLUMNS.
+shopt -s checkwinsize
+
+# make less more friendly for non-text input files, see lesspipe(1)
+[ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+# set a fancy prompt (non-color, unless we know we "want" color)
+case "$TERM" in
+    xterm-color) color_prompt=yes;;
+esac
+
+# uncomment for a colored prompt, if the terminal has the capability; turned
+# off by default to not distract the user: the focus in a terminal window
+# should be on the output of commands, not on the prompt
+#force_color_prompt=yes
+
+if [ -n "$force_color_prompt" ]; then
+    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
+	# We have color support; assume it's compliant with Ecma-48
+	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
+	# a case would tend to support setf rather than setaf.)
+	color_prompt=yes
+    else
+	color_prompt=
+    fi
+fi
+
+if [ "$color_prompt" = yes ]; then
+    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+else
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+fi
+unset color_prompt force_color_prompt
+
+# If this is an xterm set the title to user@host:dir
+case "$TERM" in
+xterm*|rxvt*)
+    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+    ;;
+*)
+    ;;
+esac
+
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    #alias dir='dir --color=auto'
+    #alias vdir='vdir --color=auto'
+
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+
+# some more ls aliases
+alias ll='ls -alF'
+alias la='ls -A'
+alias l='ls -CF'
+
+#displays sizes of folders, sorted
+alias lsize='du -sch -B 1000000 * | sort -h'
+
+
+alias wgetmuthead='wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names -k --waitretry=6 www.muthead.com -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/'
+
+#edit bashrc with vim
+alias vbash='vim ~/.bashrc && cd ~ && . .bashrc'
+
+#edit bashrc with gedit (desktop only)
+alias gbash='gedit ~/.bashrc && cd ~ && . .bashrc'
+alias cpwgetmut='cat /root/wgetcommandmut.txt|xclip -i && xclip -o'
+alias cpwget='cat /root/wgetcommand.txt|xclip -i && xclip -o'
+alias bsh='cd ~ && . .bashrc'
+#edits the current site config
+#$current_config = '000-default.conf
+apconfig ()
+{
+echo hey
+vim /etc/apache2/sites-available/$aconf
+echo done1
+
+}
+#alias apconf='vim /etc/apache2/sites-available/000-default.conf'
+alias apconfg='gedit /etc/apache2/sites-available/000-default.conf'
+alias lsizewatch='watch -n 0 -t "du -sch * -B 1000| sort -h"'
+alias lsizewatch1='watch -n 0 -t "du -sch * -B 1000 --threshold=500K| sort -h"'
+alias apreset='sudo service apache2 restart'
+
+ytdl () #alias
+{
+youtube-dl -f bestvideo+bestaudio $1
+}
+
+dbul () #alias
+{
+/root/Dropbox-Uploader/dropbox_uploader.sh upload $1 $2
+}
+
+dbl () #alias
+{
+/root/Dropbox-Uploader/dropbox_uploader.sh list $1
+}
+
+dbdl () #alias
+{
+/root/Dropbox-Uploader/dropbox_uploader.sh download $1 $2
+}
+
+rnus () #alias
+{
+find $1 -depth -name "* *" -execdir rename 's/ /_/g' "{}" \;
+}
+
+alias wtch="watch -n 0 -t 'du -sch * -B 1000000 2>/dev/null | sort -h && df -h -B 1000000| head -2 | cut -d\  -f4'"
+
+#wtch()
+#{
+#watch -n 0 -t "du -sch * -B 1000000 2>/dev/null | sort -h && df -h -B 1000000 | head -2 | awk '{print $4}'"
+#watch -n 0 -t "du -sch * -B 1000000 2>/dev/null | sort -h && df -h -B 1000000 | head -2 | awk '{print $4}'"
+#} 
+
+sedp () #alias
+{
+sed -n $1p $2
+}
+
+sedr () #alias
+{
+sed -i '$1s/.*/$2/' $3
+echo "sed -i '$1s/.*/$2/' $3"
+}
+
+tm () { #alias
+tmux attach -t $1
+}
+
+wg () #alias
+{
+echo "wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names --waitretry=6 www.muthead.com/17/players -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/"
+}
+alias wget17='wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names --waitretry=6 -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/ http://www.muthead.com'
+
+wbd () #alias
+{
+wayback_machine_downloader -a -c 50 $1
+}
+
+# Alias definitions.
+# You may want to put all your additions into a separate file like
+# ~/.bash_aliases, instead of adding them here directly.
+# See /usr/share/doc/bash-doc/examples in the bash-doc package.
+export PATH=$PATH:/sbin
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+#if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+#    . /etc/bash_completion
+#fi
+
+mkcdr () #alias
+{
+    mkdir -p -- "$1" &&
+    cd -P -- "$1"
+}
+
+catl () #alias
+{
+    head -"$1" "$2" | tail -1
+}
+
+alias sagi='sudo apt-get install -y'
+alias up='sudo apt-get update'
+alias app='sudo apt-cache search .'
+ran () #alias
+{
+    card=$(shuf -i 1-706 -n 1)    
+    head -$card /root/caghw.txt | tail -1
+    #card=$(shuf -i 1-706 -n 1)    
+    #head -$card /root/caghw.txt | tail -1
+    #card=$(shuf -i 1-706 -n 1)    
+    #head -$card /root/caghw.txt | tail -1
+    #card=$(shuf -i 1-706 -n 1)    
+    #head -$card /root/caghw.txt | tail -1
+}
+
+wg1 () #alias
+{
+    wget -x -nc -r -l 0 -k $1
+}
+alias all="sudo apt-cache search ."
+
+
+alias myip="curl -s http://whatismijnip.nl |cut -d ' ' -f 5"
+alias tmls="tmux ls"
+
+alias freem='free -m | awk "FNR == 2 {print \$4}"'
+
+freemw () #alias
+{
+watch -n 0 -t "echo Free RAM && free -m | awk 'FNR == 3 {print $4}'"
+}
+
+alias watch='watch '
+
+alias cdw='cd /var/www'
+alias cdwh='cd /var/www/html'
+
+alias tmuxk='tmux kill-session -t '
+
+alias trans='sudo service transmission-daemon restart'
+
+
