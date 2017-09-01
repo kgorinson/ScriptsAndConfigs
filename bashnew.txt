@@ -89,9 +89,6 @@ alias l='ls -CF'
 #displays sizes of folders, sorted
 alias lsize='du -sch -B 1000000 * | sort -h'
 
-
-alias wgetmuthead='wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names -k --waitretry=6 www.muthead.com -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/'
-
 #edit bashrc with vim
 alias vbash='vim ~/.bashrc && cd ~ && . .bashrc'
 
@@ -115,25 +112,6 @@ alias lsizewatch='watch -n 0 -t "du -sch * -B 1000| sort -h"'
 alias lsizewatch1='watch -n 0 -t "du -sch * -B 1000 --threshold=500K| sort -h"'
 alias apreset='sudo service apache2 restart'
 
-ytdl () #alias
-{
-youtube-dl -f bestvideo+bestaudio $1
-}
-
-dbul () #alias
-{
-/root/Dropbox-Uploader/dropbox_uploader.sh upload $1 $2
-}
-
-dbl () #alias
-{
-/root/Dropbox-Uploader/dropbox_uploader.sh list $1
-}
-
-dbdl () #alias
-{
-/root/Dropbox-Uploader/dropbox_uploader.sh download $1 $2
-}
 
 rnus () #alias
 {
@@ -161,17 +139,6 @@ echo "sed -i '$1s/.*/$2/' $3"
 
 tm () { #alias
 tmux attach -t $1
-}
-
-wg () #alias
-{
-echo "wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names --waitretry=6 www.muthead.com/17/players -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/"
-}
-alias wget17='wget -x --load-cookies cookies.txt -nc -r -l 0 --trust-server-names --waitretry=6 -X /15/,/25/,/forums/,/madden-mobile/,/16/lineups/,/members/ http://www.muthead.com'
-
-wbd () #alias
-{
-wayback_machine_downloader -a -c 50 $1
 }
 
 # Alias definitions.
